@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Todos from "../component/todos";
 import AddTodo from "../component/AddTodo";
 import "../pages/Home.css";
+import Axios from "axios";
+import { add } from "date-fns";
 
 class Home extends Component {
   // Create a default state of this component with an empty list of todos.
@@ -10,6 +12,18 @@ class Home extends Component {
     this.state = {
       todos: [],
     };
+    Axios.get("http://localhost:3001/").then((res) => {
+      res.data.forEach((el) => {
+        // create new todo item
+        const todo = {
+          content: el.Task,
+          date: el.Current_Date,
+          duedate: el.Due_Date,
+        }
+        this.addTodo(todo)
+      })
+    });
+    console.log(this.state.todos);
   }
 
   // the deleteTodo function simply creates a new array that removes the todo item selected from the user from the list
